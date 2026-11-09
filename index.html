@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Explore physics, mathematics, electronics and programming with clear educational articles.">
+<title>Physics & Beyond | Learn Something New</title>
+<style>
+:root {
+  --bg: #f5f7fb;
+  --paper: #ffffff;
+  --ink: #172033;
+  --muted: #667085;
+  --accent: #6757e8;
+  --line: #e5e9f2;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+}
+header {
+  background: #101827;
+  color: white;
+  padding: 16px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.brand { font-size: 1.15rem; font-weight: 800; }
+.brand span { color: #a99fff; }
+nav { display: flex; gap: 18px; flex-wrap: wrap; }
+nav a { color: #e0e7ff; text-decoration: none; font-size: .92rem; }
+nav a:hover { color: white; }
+.hero {
+  padding: 68px 6% 55px;
+  color: white;
+  background: linear-gradient(125deg, #101827, #293b68);
+}
+.hero small { color: #c5bcff; font-weight: 700; letter-spacing: 2px; }
+.hero h1 {
+  max-width: 750px;
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  line-height: 1.12;
+  margin: 15px 0;
+}
+.hero p { max-width: 600px; color: #d4dced; }
+main { max-width: 1100px; margin: auto; padding: 32px 20px 60px; }
+.section-title { margin: 0 0 5px; font-size: 1.7rem; }
+.sub { margin: 0 0 24px; color: var(--muted); }
+.search {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  margin-bottom: 16px;
+}
+.filters { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 25px; }
+.filters button, .back {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 9px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font: inherit;
+}
+.filters button.active, .back {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 5px 18px #1c2c4b08;
+}
+.symbol { font-size: 2rem; margin-bottom: 10px; }
+.tag { color: var(--accent); font-size: .8rem; font-weight: 750; }
+.card h3 { margin: 7px 0; line-height: 1.35; }
+.card p { color: var(--muted); margin: 0 0 18px; }
+.read {
+  margin-top: auto;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 750;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+.article {
+  background: var(--paper);
+  padding: clamp(20px, 5vw, 45px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.article h1 { line-height: 1.2; }
+.article-body { overflow-wrap: anywhere; }
+.article-body h2 { margin-top: 30px; }
+.article-body pre {
+  overflow-x: auto;
+  padding: 16px;
+  border-radius: 10px;
+  background: #101827;
+  color: #e6edff;
+}
+.hidden { display: none !important; }
+footer {
+  text-align: center;
+  background: #101827;
+  color: #d4dced;
+  padding: 28px 16px;
+}
+footer a { color: #c5bcff; }
+@media (max-width: 500px) {
+  header { padding: 15px 5%; }
+  nav { gap: 12px; }
+  .hero { padding: 48px 5%; }
+  main { padding: 25px 15px 45px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Physics <span>& Beyond</span></div>
+  <nav>
+    <a href="#" id="homeLink">Home</a>
+    <a href="#topics">Topics</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <small>EXPLORE • UNDERSTAND • CREATE</small>
+  <h1>Curiosity is where learning begins.</h1>
+  <p>Discover physics, mathematics, electronics and programming
+  through clear explanations and practical examples.</p>
+</section>
+
+<main>
+  <section id="listing">
+    <h2 class="section-title" id="topics">Explore the knowledge library</h2>
+    <p class="sub">Choose a topic or search for something you want to learn.</p>
+    <input class="search" id="search" type="search"
+      placeholder="Search articles..." aria-label="Search articles">
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="articles"></div>
+    <p id="empty" class="sub hidden">No matching articles. Try another search.</p>
+  </section>
+
+  <section id="reader" class="hidden">
+    <button class="back" id="back">← All articles</button>
+    <article class="article" style="margin-top:20px">
+      <div class="tag" id="articleTag"></div>
+      <h1 id="articleTitle"></h1>
+      <p class="sub" id="articleDescription"></p>
+      <div class="article-body" id="articleBody"></div>
+    </article>
+  </section>
+
+  <section id="about" style="margin-top:55px">
+    <h2 class="section-title">About this website</h2>
+    <p class="sub">An independent learning space for curious minds.
+    Learn concepts, explore experiments and build your understanding
+    one article at a time.</p>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Physics & Beyond</strong></p>
+  <p>Made for curious minds. Keep learning, keep exploring.</p>
+  <p>© <span id="year"></span> Physics & Beyond</p>
+</footer>
+
+<script>
+const posts = [
+  {
+    id: "newton",
+    title: "Newton's Three Laws of Motion",
+    category: "Physics",
+    icon: "🍎",
+    description: "Understand inertia, force and action-reaction.",
+    body: `
+      <h2>Introduction</h2>
+      <p>Newton's laws describe how forces affect the motion
+      of objects. They are foundational to classical mechanics.</p>
+      <h2>First law: Inertia</h2>
+      <p>An object remains at rest or moves at constant velocity
+      unless a net external force acts on it.</p>
+      <h2>Second law</h2>
+      <p>The net force equals mass multiplied by acceleration.</p>
+      <pre>F = m × a</pre>
+      <p>Force is measured in newtons (N), mass in kilograms (kg)
+      and acceleration in metres per second squared (m/s²).</p>
+      <h2>Third law</h2>
+      <p>For every force one object exerts on another, there is an
+      equal and opposite force exerted back on the first object.
+      These forces act on different objects.</p>
+      <h2>Example</h2>
+      <p>A 2 kg object accelerates at 3 m/s². The net force is
+      F = 2 × 3 = 6 N.</p>`
+  },
+  {
+    id: "ohm",
+    title: "Ohm's Law Explained",
+    category: "Electronics",
+    icon: "⚡",
+    description: "Learn the relationship between voltage, current and resistance.",
+    body: `
+      <h2>The relationship</h2>
+      <p>For an ohmic conductor at constant physical conditions,
+      voltage equals current multiplied by resistance.</p>
+      <pre>V = I × R</pre>
+      <p>V is voltage in volts, I is current in amperes and
+      R is resistance in ohms.</p>
+      <h2>Worked example</h2>
+      <p>If a 6 Ω resistor has 12 V across it, the current is:</p>
+      <pre>I = V / R = 12 / 6 = 2 A</pre>
+      <p>Always use suitable current limits and power ratings
+      when building real circuits.</p>`
+  },
+  {
+    id: "calculus",
+    title: "A Beginner's Guide to Derivatives",
+    category: "Mathematics",
+    icon: "∫",
+    description: "Explore rates of change with a simple example.",
+    body: `
+      <h2>What is a derivative?</h2>
+      <p>A derivative measures how quickly a quantity changes
+      with respect to another quantity.</p>
+      <p>For example, velocity is the derivative of position
+      with respect to time.</p>
+      <h2>A basic rule</h2>
+      <pre>d(xⁿ)/dx = n xⁿ⁻¹</pre>
+      <p>If f(x) = x², then f'(x) = 2x.</p>
+      <p>At x = 3, the derivative is 6. This gives the slope
+      of the tangent to the curve at that point.</p>`
+  },
+  {
+    id: "python",
+    title: "Your First Python Program",
+    category: "Programming",
+    icon: "💻",
+    description: "Write a simple program and understand its output.",
+    body: `
+      <h2>Printing a message</h2>
+      <p>Python is a popular programming language used in
+      scientific computing, data analysis and automation.</p>
+      <pre>print("Hello, world!")</pre>
+      <p>This displays Hello, world! on the screen.</p>
+      <h2>Calculate a physical quantity</h2>
+      <pre>mass = 2
+acceleration = 3
+force = mass * acceleration
+print(force, "N")</pre>
+      <p>The output is 6 N, using Newton's second law.</p>`
+  },
+  {
+    id: "solar",
+    title: "How Solar Panels Generate Electricity",
+    category: "Electronics",
+    icon: "☀️",
+    description: "Discover the photovoltaic effect and useful applications.",
+    body: `
+      <h2>The photovoltaic effect</h2>
+      <p>Solar cells convert light into electrical energy using
+      semiconductor materials. Light can generate charge carriers
+      that are separated by the cell's internal electric field.</p>
+      <h2>Connecting a system</h2>
+      <p>A practical solar setup may include a solar panel,
+      a charge controller, a suitable battery and a load.</p>
+      <p>Use a controller and protection designed for your battery
+      chemistry and panel voltage. Never connect an arbitrary panel
+      directly to a battery without suitable charging control.</p>`
+  },
+  {
+    id: "waves",
+    title: "Understanding Waves and Frequency",
+    category: "Physics",
+    icon: "〰️",
+    description: "Connect wavelength, frequency and wave speed.",
+    body: `
+      <h2>Wave properties</h2>
+      <p>Waves transfer energy. Wavelength is the distance between
+      corresponding points on consecutive cycles. Frequency is
+      the number of cycles per second.</p>
+      <pre>v = f × λ</pre>
+      <p>Here v is wave speed, f is frequency and λ is wavelength.</p>
+      <h2>Example</h2>
+      <p>A wave with frequency 5 Hz and wavelength 2 m has speed
+      v = 5 × 2 = 10 m/s.</p>`
+  }
+];
+
+const categories = ["All", "Physics", "Mathematics",
+                    "Electronics", "Programming"];
+let selected = "All";
+
+const $ = id => document.getElementById(id);
+
+function renderFilters() {
+  $("filters").innerHTML = categories.map(c =>
+    `<button class="${selected === c ? "active" : ""}"
+    data-category="${c}">${c}</button>`
+  ).join("");
+}
+
+function renderPosts() {
+  const query = $("search").value.trim().toLowerCase();
+  const visible = posts.filter(p =>
+    (selected === "All" || p.category === selected) &&
+    (p.title + " " + p.description + " " + p.category)
+      .toLowerCase().includes(query)
+  );
+
+  $("articles").innerHTML = visible.map(p => `
+    <article class="card">
+      <div class="symbol">${p.icon}</div>
+      <div class="tag">${p.category}</div>
+      <h3>${p.title}</h3>
+      <p>${p.description}</p>
+      <button class="read" data-open="${p.id}">Read article →</button>
+    </article>
+  `).join("");
+
+  $("empty").classList.toggle("hidden", visible.length !== 0);
+}
+
+function showHome() {
+  $("listing").classList.remove("hidden");
+  $("about").classList.remove("hidden");
+  $("reader").classList.add("hidden");
+  history.replaceState(null, "", location.pathname + location.search);
+}
+
+function openPost(id) {
+  const p = posts.find(item => item.id === id);
+  if (!p) return;
+
+  $("listing").classList.add("hidden");
+  $("about").classList.add("hidden");
+  $("reader").classList.remove("hidden");
+  $("articleTag").textContent = p.category;
+  $("articleTitle").textContent = p.title;
+  $("articleDescription").textContent = p.description;
+  $("articleBody").innerHTML = p.body;
+  history.replaceState(null, "", "#" + p.id);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+$("filters").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-category]");
+  if (!btn) return;
+  selected = btn.dataset.category;
+  renderFilters();
+  renderPosts();
+});
+
+$("articles").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-open]");
+  if (btn) openPost(btn.dataset.open);
+});
+
+$("search").addEventListener("input", renderPosts);
+$("back").addEventListener("click", showHome);
+$("homeLink").addEventListener("click", e => {
+  e.preventDefault();
+  showHome();
+});
+$("year").textContent = new Date().getFullYear();
+
+renderFilters();
+renderPosts();
+
+const initialId = location.hash.slice(1);
+if (posts.some(p => p.id === initialId)) openPost(initialId);
+</script>
+</body>
+</html>
